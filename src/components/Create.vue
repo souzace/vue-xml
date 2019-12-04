@@ -1,39 +1,28 @@
 <template>
   <div>
     <div class="col-md-12 form-wrapper">
-      <h2>Criar Livro</h2>
-      <form id="create-post-form" v-on:submit.prevent="createBook">
+      <h2>Criar Usuário</h2>
+      <form id="create-post-form" v-on:submit.prevent="createUser">
         <div class="form-group col-md-12">
-          <label for="title">Título</label>
+          <label for="name">Nome</label>
           <input
             type="text"
-            id="title"
-            v-model="title"
-            name="title"
+            id="name"
+            v-model="name"
+            name="name"
             class="form-control"
-            placeholder="Título"
+            placeholder="Nome"
           />
         </div>
         <div class="form-group col-md-12">
-          <label for="title">Descrição</label>
+          <label for="email">Email</label>
           <input
             type="text"
-            id="description"
-            v-model="description"
-            name="title"
+            id="email"
+            v-model="email"
+            name="email"
             class="form-control"
-            placeholder="Descrição"
-          />
-        </div>
-        <div class="form-group col-md-12">
-          <label for="title">Autor</label>
-          <input
-            type="text"
-            id="author"
-            v-model="author"
-            name="author"
-            class="form-control"
-            placeholder="Autor"
+            placeholder="Email"
           />
         </div>
         <div class="form-group col-md-4 pull-right">
@@ -51,20 +40,19 @@ import router from "../router/index";
 export default {
   data() {
     return {
-      title: "",
-      description: "",
-      author: ""
+      name: "",
+      email: ""
     };
   },
   methods: {
-    createBook() {
+    createUser() {
       
       let customerData = {
-        title: this.title,
-        description: this.description,
-        author: this.author
+        name: this.name,
+        email: this.email
       };
-      axios.post(`${server.baseURL}/books`, customerData,  { withCredentials: false }).then(() => {
+      axios.post(`${server.baseURL}/users`, customerData,  { withCredentials: false }).then((user) => {
+        this.$bus.$emit('UpdateUserList', user);
         router.push({ name: "home" });
       });
     }

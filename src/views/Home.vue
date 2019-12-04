@@ -1,10 +1,10 @@
 <template>
   <div class="container-fluid">
     <div class="text-center">
-      <h1>Biblioteca</h1>
-      <p>Construído com Nest.js, Vue.js e InMemoryDB</p>
-      <div v-if="books.length === 0">
-        <h2>Nenhum livro cadastrado.</h2>
+      <h1>Usuários</h1>
+      <p>Construído com Express.js, Vue.js e SQLite</p>
+      <div v-if="users.length === 0">
+        <h2>Nenhum usuário cadastrado.</h2>
       </div>
     </div>
 
@@ -12,27 +12,27 @@
       <table class="table table-bordered">
         <thead class="thead-dark">
           <tr>
-            <th scope="col">Título</th>
-            <th scope="col">Descrição</th>
-            <th scope="col">Autor</th>
+            <th scope="col">Id</th>
+            <th scope="col">Nome</th>
+            <th scope="col">Email</th>
             <th scope="col">Ações</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="book in books" :key="book._id">
-            <td>{{ book.title }}</td>
-            <td>{{ book.description }}</td>
-            <td>{{ book.author }}</td>
+          <tr v-for="user in users" :key="user._id">
+            <td>{{ user.id }}</td>
+            <td>{{ user.name }}</td>
+            <td>{{ user.email }}</td>
             <td>
               <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group" style="margin-bottom: 20px;">
                   <router-link
-                    :to="{name: 'Edit', params: {id: book.id}}"
+                    :to="{name: 'Edit', params: {id: user.id}}"
                     class="btn btn-sm btn-outline-secondary"
                   >Editar</router-link>
                   <button
                     class="btn btn-sm btn-outline-secondary"
-                    v-on:click="deleteBook(book.id)"
+                    v-on:click="deleteUser(user.id)"
                   >Excluir</button>
                 </div>
               </div>
@@ -46,49 +46,49 @@
 <script>
 import { server } from "../helper";
 import axios from "axios";
-
+import * as Parser from "fast-xml-parser";
 
 export default {
   data() {
     return {
-      books: []
+      users: []
     };
   },
   created() {
-    this.fetchBooks();
+    this.fetchUsers();
   },
   methods: {
-    fetchBooks() {
+    fetchUsers() {
       axios
         .get(`${server.baseURL}/users`, { responseType: 'document'})
         .then(data => {
-          const reader = new FileReader();
-          let xml;
-          var bla =  new XMLSerializer().serializeToString(data.data);
-          var b = new Blob([bla]);
 
-          reader.readAsText(b);
           
-          reader.onload = function(e) {
-            xml = e.target.result;
-            const beginXML = xml.search("<users");
-            //console.log(beginXML);
-            xml = xml.substring(beginXML, xml.length);
-            console.log(xml);
-          };
+          let usersXml =  new XMLSerializer().serializeToString(data.data);
+          
+          let usersObj = Parser.parse(usersXml);
 
-          //this.books = data.data;
+          console.log(usersObj);
+
+          this.users = usersObj.users.user;
         });
 
     },
-    deleteBook(id) {
+    deleteUser(id) {
       axios
-        .delete(`${server.baseURL}/books/${id}`)
+        .delete(`${server.baseURL}/users/${id}`)
         .then(data => {
           console.log(data);
           window.location.reload();
         });
     }
+  },
+  mounted() {
+    this.$bus.$on("UpdateUserList", user => {
+      this.users.push(user);
+      //this.fetchUsers();
+
+    });
   }
 };
 </script>

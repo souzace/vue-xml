@@ -1,4 +1,4 @@
-# book-estacio-store-vue
+# users-estacio-vue
 
 ## Project setup
 ```

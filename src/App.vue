@@ -1,8 +1,8 @@
 <template>
   <div id="app">
     <div id="nav">
-      <router-link to="/">Listar Livros</router-link> |
-      <router-link to="/create">Criar Livro</router-link>
+      <router-link to="/">Listar Usuários</router-link> |
+      <router-link to="/create">Criar Usuário</router-link>
     </div>
     <router-view/>
   </div>

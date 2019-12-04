@@ -6,42 +6,30 @@
       </small>
     </h4>
     <div class="col-md-12 form-wrapper">
-      <h2>Editar Livro</h2>
-      <form id="create-post-form" @submit.prevent="editBook">
+      <h2>Editar Usuário</h2>
+      <form id="create-post-form" @submit.prevent="editUser">
         <div class="form-group col-md-12">
-          <label for="title">Título</label>
+          <label for="name">Nome</label>
           <input
             type="text"
-            id="title"
-            v-model="book.title"
-            name="title"
+            id="name"
+            v-model="user.name"
+            name="name"
             class="form-control"
-            placeholder="Título"
+            placeholder="Nome"
           />
         </div>
         <div class="form-group col-md-12">
-          <label for="title">Descrição</label>
+          <label for="email">Email</label>
           <input
             type="text"
-            id="description"
-            v-model="book.description"
-            name="title"
+            id="email"
+            v-model="user.email"
+            name="email"
             class="form-control"
-            placeholder="Descrição"
+            placeholder="Email"
           />
         </div>
-        <div class="form-group col-md-12">
-          <label for="title">Autor</label>
-          <input
-            type="text"
-            id="author"
-            v-model="book.author"
-            name="author"
-            class="form-control"
-            placeholder="Autor"
-          />
-        </div>
-
         <div class="form-group col-md-4 pull-right">
           <button class="btn btn-success" type="submit">Salvar</button>
         </div>
@@ -53,36 +41,46 @@
 import axios from "axios";
 import { server } from "../helper";
 import router from "../router/index";
+import * as Parser from "fast-xml-parser";
 
 export default {
   data() {
     return {
       id: 0,
-      book: {}
+      user: {}
     };
   },
   created() {
     this.id = this.$route.params.id;
-    this.getBook();
+    this.getUser();
   },
   methods: {
-    editBook() {
-      let bookData = {
+    editUser() {
+      let userData = {
         id: this.$route.params.id,
-        title: this.book.title,
-        description: this.book.description,
-        author: this.book.author
+        name: this.user.name,
+        email: this.user.email
       };
       axios
-        .put(`${server.baseURL}/books/${this.id}`, bookData)
+        .put(`${server.baseURL}/users/${this.id}`, userData)
         .then(() => {
           router.push({ name: "home" });
         });
     },
-    getBook() {
+    getUser() {
       axios
-        .get(`${server.baseURL}/books/${this.id}`)
-        .then(data => (this.book = data.data));
+        .get(`${server.baseURL}/users/${this.id}`, { responseType: 'document'})
+        .then(data => {
+          
+          let usersXml =  new XMLSerializer().serializeToString(data.data);
+          
+          let usersObj = Parser.parse(usersXml);
+
+          console.log(usersObj);
+
+          this.user = usersObj.user.user;
+
+        });
     },
     navigate() {
       router.go(-1);
