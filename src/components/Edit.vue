@@ -76,7 +76,7 @@ export default {
           
           let usersObj = Parser.parse(usersXml);
 
-          console.log(usersObj);
+          //console.log(usersObj);
 
           this.user = usersObj.user.user;
 

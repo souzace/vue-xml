@@ -68,7 +68,7 @@ export default {
           
           let usersObj = Parser.parse(usersXml);
 
-          console.log(usersObj);
+          //console.log(usersObj);
 
           this.users = usersObj.users.user;
         });
@@ -77,8 +77,8 @@ export default {
     deleteUser(id) {
       axios
         .delete(`${server.baseURL}/users/${id}`)
-        .then(data => {
-          console.log(data);
+        .then(() => {
+          //console.log(data);
           window.location.reload();
         });
     }
