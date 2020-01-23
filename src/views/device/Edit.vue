@@ -39,8 +39,8 @@
 </template>
 <script>
 import axios from "axios";
-import { server } from "../helper";
-import router from "../router/index";
+import { server } from "../../helper";
+import router from "../../router/index";
 import * as Parser from "fast-xml-parser";
 
 export default {

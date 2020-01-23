@@ -35,8 +35,8 @@
 
 <script>
 import axios from "axios";
-import { server } from "../helper";
-import router from "../router/index";
+import { server } from "../../helper";
+import router from "../../router/index";
 export default {
   data() {
     return {

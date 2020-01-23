@@ -2,8 +2,10 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 
 import Home from '../views/Home';
-import EditComponent from '../components/Edit';
-import CreateComponent from '../components/Create';
+import UserList from '../views/user/List';
+import UserCreateComponent from '../views/user/Create';
+import UserEditComponent from '../views/user/Edit';
+
 Vue.use(VueRouter)
 
 const routes = [
@@ -12,8 +14,13 @@ const routes = [
     name: 'home',
     component: Home
   },
-  { path: '/create', name: 'Create', component: CreateComponent },
-  { path: '/edit/:id', name: 'Edit', component: EditComponent },
+  {
+    path: '/users',
+    name: 'users',
+    component: UserList
+  },
+  { path: '/users/create', name: 'Create', component: UserCreateComponent },
+  { path: '/users/edit/:id', name: 'Edit', component: UserEditComponent },
 ]
 
 const router = new VueRouter({

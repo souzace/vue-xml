@@ -50,7 +50,7 @@
 </template>
 
 <script>
-import { server } from "../helper";
+import { server } from "../../helper";
 import axios from "axios";
 import * as Parser from "fast-xml-parser";
 
