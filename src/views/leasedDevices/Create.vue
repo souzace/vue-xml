@@ -67,7 +67,7 @@ export default {
       };
       axios.post(`${server.baseURL}/leasedDevices`, customerData,  { withCredentials: false }).then((leasedDevice) => {
         this.$bus.$emit('UpdateLeasedDeviceList', leasedDevice);
-        router.push({ name: "home" });
+        router.push({ name: "leasedDevices" });
       });
     }
   }

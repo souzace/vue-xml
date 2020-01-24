@@ -64,14 +64,14 @@ export default {
         devolutionDate: this.leasedDevice.devolutionDate
       };
       axios
-        .put(`${server.baseURL}/leasedDevices/${this.id}`, leasedDeviceData)
+        .put(`${server.baseURL}/leasedDevices/${this.$route.params.id}`, leasedDeviceData)
         .then(() => {
-          router.push({ name: "home" });
+          router.push({ name: "leasedDevices" });
         });
     },
     getLeasedDevice() {
       axios
-        .get(`${server.baseURL}/leasedDevices/${this.id}`, { responseType: 'document'})
+        .get(`${server.baseURL}/leasedDevices/${this.$route.params.id}`, { responseType: 'document'})
         .then(data => {
           
           let leasedDevicesXml =  new XMLSerializer().serializeToString(data.data);
@@ -80,7 +80,7 @@ export default {
 
           //console.log(leasedDevicesObj);
 
-          this.leasedDevices = leasedDevicesObj.leasedDevice.leasedDevice;
+          this.leasedDevice = leasedDevicesObj.leasedDevice.leasedDevice;
 
         });
     },

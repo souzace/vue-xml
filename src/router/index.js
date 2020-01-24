@@ -15,16 +15,10 @@ import LeasedDeviceEditComponent from '../views/leasedDevices/Edit';
 Vue.use(VueRouter)
 
 const routes = [
-  {
-    path: '/',
-    name: 'home',
-    component: Home
-  },
-  {
-    path: '/users',
-    name: 'users',
-    component: UserList
-  },
+  { path: '/', name: 'home', component: Home},
+
+  { path: '/users', name: 'users', component: UserList },
+  
   { path: '/users/create', name: 'userCreate', component: UserCreateComponent },
   { path: '/users/edit/:id', name: 'userEdit', component: UserEditComponent },
   

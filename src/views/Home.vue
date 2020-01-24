@@ -7,8 +7,6 @@
 
     <div class>
       Bem vindo(a)!
-      <a href="/devices">Dispositivos</a>
-      <a href="/leasedDevices">Dispositivos Locados</a>
     </div>
   </div>
 </template>

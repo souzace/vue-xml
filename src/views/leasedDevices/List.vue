@@ -21,7 +21,6 @@
         </thead>
         <tbody>
           <tr v-for="leasedDevice in leasedDevices" :key="leasedDevice.id">
-            <td>{{ leasedDevice.id }}</td>
             <td>{{ leasedDevice.leaseDate }}</td>
             <td>{{ leasedDevice.tippingNumber }}</td>
             <td>{{ leasedDevice.collaboratorName }}</td>
@@ -31,7 +30,7 @@
               <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group" style="margin-bottom: 20px;">
                   <router-link
-                    :to="{name: 'Edit', params: {id: leasedDevice.id}}"
+                    :to="{name: 'leasedDeviceEdit', params: {id: leasedDevice.id}}"
                     class="btn btn-sm btn-outline-secondary"
                   >Editar</router-link>
                   <button
@@ -64,26 +63,26 @@ export default {
     };
   },
   created() {
-    this.fetchDevices();
+    this.fetchLeasedDevices();
   },
   methods: {
     newLeasedDevice() {
       router.push({ name: 'leasedDeviceCreate'});
     },
-    fetchDevices() {
+    fetchLeasedDevices() {
       axios
         .get(`${server.baseURL}/leasedDevices`, { responseType: 'document'})
         .then(data => {
           
           if (data.data !== null) {
             
-            let devicesXml =  new XMLSerializer().serializeToString(data.data);
-            let devicesObj = Parser.parse(devicesXml);
+            let leasedDevicesXml =  new XMLSerializer().serializeToString(data.data);
+            let leasedDevicesObj = Parser.parse(leasedDevicesXml);
             
-            if (Array.isArray(devicesObj.devices.device)) {
-              this.devices = devicesObj.devices.device;
+            if (Array.isArray(leasedDevicesObj.leasedDevices.device)) {
+              this.leasedDevices = leasedDevicesObj.leasedDevices.device;
             } else {
-              this.devices.push(devicesObj.devices.device);
+              this.leasedDevices.push(leasedDevicesObj.leasedDevices.device);
             }
           } 
 
@@ -91,7 +90,7 @@ export default {
         });
 
     },
-    deleteDevice(id) {
+    deleteLeasedDevice(id) {
       axios
         .delete(`${server.baseURL}/leasedDevices/${id}`)
         .then(() => {
@@ -102,8 +101,8 @@ export default {
   },
   mounted() {
     /*this.$bus.$on("UpdateDeviceList", device => {
-     // this.devices.push(device);
-      //this.fetchDevices();
+     // this.leasedDevices.push(device);
+      //this.fetchLeasedDevices();
 
     });*/
   }
