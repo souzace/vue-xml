@@ -1,9 +1,35 @@
 <template>
   <div>
     <div class="col-md-12 form-wrapper">
-      <h2>Criar Usuário</h2>
-      <form id="create-post-form" v-on:submit.prevent="createUser">
-        <div class="form-group col-md-12">
+      <h2>Criar Dispositivo</h2>
+      <form id="create-post-form" v-on:submit.prevent="createDevice">
+      <div class="row">
+        <div class="form-group col-md-6">
+          <label for="tippingNumber">Tombamento</label>
+          <input
+            type="text"
+            id="tippingNumber"
+            v-model="tippingNumber"
+            name="tippingNumber"
+            class="form-control"
+            placeholder="Tombamento"
+          />
+        </div>
+        <div class="form-group col-md-6">
+          <label for="typeDevice">Tipo</label>
+          <input
+            type="text"
+            id="typeDevice"
+            v-model="typeDevice"
+            name="typeDevice"
+            class="form-control"
+            placeholder="Tipo"
+          />
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="form-group col-md-6">
           <label for="name">Nome</label>
           <input
             type="text"
@@ -14,18 +40,45 @@
             placeholder="Nome"
           />
         </div>
-        <div class="form-group col-md-12">
-          <label for="email">Email</label>
+        <div class="form-group col-md-6">
+          <label for="maker">Fabricante</label>
           <input
             type="text"
-            id="email"
-            v-model="email"
-            name="email"
+            id="maker"
+            v-model="maker"
+            name="maker"
             class="form-control"
-            placeholder="Email"
+            placeholder="maker"
           />
         </div>
-        <div class="form-group col-md-4 pull-right">
+      </div>
+
+      <div class="row">
+        <div class="form-group col-md-6">
+          <label for="model">Modelo</label>
+          <input
+            type="text"
+            id="model"
+            v-model="model"
+            name="model"
+            class="form-control"
+            placeholder="Modelo"
+          />
+        </div>
+        <div class="form-group col-md-6">
+          <label for="operatingSystem">Sistema Operacional</label>
+          <input
+            type="text"
+            id="operatingSystem"
+            v-model="operatingSystem"
+            name="operatingSystem"
+            class="form-control"
+            placeholder="Sistema Operacional"
+          />
+        </div>
+      </div>  
+
+        <div class="form-group col-md-12 pull-right">
           <button class="btn btn-success" type="submit">Salvar</button>
         </div>
       </form>
@@ -40,19 +93,27 @@ import router from "../../router/index";
 export default {
   data() {
     return {
+      tippingNumber: "",
+      typeDevice: "",
       name: "",
-      email: ""
+      maker: "",
+      model: "",
+      operatingSystem: "",
     };
   },
   methods: {
-    createUser() {
+    createDevice() {
       
       let customerData = {
+        tippingNumber: this.tippingNumber,
+        typeDevice: this.typeDevice,
         name: this.name,
-        email: this.email
+        maker: this.maker,
+        model: this.model,
+        operatingSystem: this.operatingSystem
       };
-      axios.post(`${server.baseURL}/users`, customerData,  { withCredentials: false }).then((user) => {
-        this.$bus.$emit('UpdateUserList', user);
+      axios.post(`${server.baseURL}/devices`, customerData,  { withCredentials: false }).then((device) => {
+        this.$bus.$emit('UpdateDeviceList', device);
         router.push({ name: "home" });
       });
     }

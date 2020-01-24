@@ -6,31 +6,83 @@
       </small>
     </h4>
     <div class="col-md-12 form-wrapper">
-      <h2>Editar Usuário</h2>
-      <form id="create-post-form" @submit.prevent="editUser">
-        <div class="form-group col-md-12">
-          <label for="name">Nome</label>
-          <input
-            type="text"
-            id="name"
-            v-model="user.name"
-            name="name"
-            class="form-control"
-            placeholder="Nome"
-          />
+      <h2>Editar Dispositivo</h2>
+      <form id="create-post-form" @submit.prevent="editDevice">
+        <div class="row">
+          <div class="form-group col-md-6">
+            <label for="tippingNumber">Tombamento</label>
+            <input
+              type="text"
+              id="tippingNumber"
+              v-model="device.tippingNumber"
+              name="tippingNumber"
+              class="form-control"
+              placeholder="Tombamento"
+            />
+          </div>
+          <div class="form-group col-md-6">
+            <label for="typeDevice">Tipo</label>
+            <input
+              type="text"
+              id="typeDevice"
+              v-model="device.typeDevice"
+              name="typeDevice"
+              class="form-control"
+              placeholder="Tipo"
+            />
+          </div>
         </div>
-        <div class="form-group col-md-12">
-          <label for="email">Email</label>
-          <input
-            type="text"
-            id="email"
-            v-model="user.email"
-            name="email"
-            class="form-control"
-            placeholder="Email"
-          />
+
+        <div class="row">
+          <div class="form-group col-md-6">
+            <label for="name">Nome</label>
+            <input
+              type="text"
+              id="name"
+              v-model="device.name"
+              name="name"
+              class="form-control"
+              placeholder="Nome"
+            />
+          </div>
+          <div class="form-group col-md-6">
+            <label for="maker">Fabricante</label>
+            <input
+              type="text"
+              id="maker"
+              v-model="device.maker"
+              name="maker"
+              class="form-control"
+              placeholder="maker"
+            />
+          </div>
         </div>
-        <div class="form-group col-md-4 pull-right">
+
+        <div class="row">
+          <div class="form-group col-md-6">
+            <label for="model">Modelo</label>
+            <input
+              type="text"
+              id="model"
+              v-model="device.model"
+              name="model"
+              class="form-control"
+              placeholder="Modelo"
+            />
+          </div>
+          <div class="form-group col-md-6">
+            <label for="operatingSystem">Sistema Operacional</label>
+            <input
+              type="text"
+              id="operatingSystem"
+              v-model="device.operatingSystem"
+              name="operatingSystem"
+              class="form-control"
+              placeholder="Sistema Operacional"
+            />
+          </div>
+        </div>
+        <div class="form-group col-md-12 pull-right">
           <button class="btn btn-success" type="submit">Salvar</button>
         </div>
       </form>
@@ -47,38 +99,43 @@ export default {
   data() {
     return {
       id: 0,
-      user: {}
+      device: {}
     };
   },
   created() {
     this.id = this.$route.params.id;
-    this.getUser();
+    this.getDevice();
   },
   methods: {
-    editUser() {
-      let userData = {
+    editDevice() {
+      let deviceData = {
         id: this.$route.params.id,
-        name: this.user.name,
-        email: this.user.email
+        tippingNumber: this.device.tippingNumber,
+        typeDevice: this.device.typeDevice,
+        name: this.device.name,
+        maker: this.device.maker,
+        model: this.device.model,
+        operatingSystem: this.device.operatingSystem,
+
       };
       axios
-        .put(`${server.baseURL}/users/${this.id}`, userData)
+        .put(`${server.baseURL}/devices/${this.id}`, deviceData)
         .then(() => {
           router.push({ name: "home" });
         });
     },
-    getUser() {
+    getDevice() {
       axios
-        .get(`${server.baseURL}/users/${this.id}`, { responseType: 'document'})
+        .get(`${server.baseURL}/devices/${this.id}`, { responseType: 'document'})
         .then(data => {
           
-          let usersXml =  new XMLSerializer().serializeToString(data.data);
+          let devicesXml =  new XMLSerializer().serializeToString(data.data);
           
-          let usersObj = Parser.parse(usersXml);
+          let devicesObj = Parser.parse(devicesXml);
 
-          //console.log(usersObj);
+          //console.log(devicesObj);
 
-          this.user = usersObj.user.user;
+          this.device = devicesObj.device.device;
 
         });
     },

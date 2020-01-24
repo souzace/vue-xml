@@ -2,9 +2,6 @@
   <div class="container-fluid">
     <div class="text-center">
       <h1>Dispositivos</h1>
-      <div v-if="devices.length === 0">
-        <h2>Nenhum dispositivo cadastrado.</h2>
-      </div>
     </div>
 
     <div class>
@@ -45,6 +42,9 @@
           </tr>
         </tbody>
       </table>
+    </div>
+    <div v-if="devices.length === 0">
+        <h2>Nenhum dispositivo cadastrado.</h2>
     </div>
   </div>
 </template>
