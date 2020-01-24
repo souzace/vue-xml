@@ -119,21 +119,21 @@ export default {
 
       };
       axios
-        .put(`${server.baseURL}/devices/${this.id}`, deviceData)
+        .put(`${server.baseURL}/devices/${this.$route.params.id}`, deviceData)
         .then(() => {
-          router.push({ name: "home" });
+          router.push({ name: "devices" });
         });
     },
     getDevice() {
       axios
-        .get(`${server.baseURL}/devices/${this.id}`, { responseType: 'document'})
+        .get(`${server.baseURL}/devices/${this.$route.params.id}`, { responseType: 'document'})
         .then(data => {
           
           let devicesXml =  new XMLSerializer().serializeToString(data.data);
           
           let devicesObj = Parser.parse(devicesXml);
 
-          //console.log(devicesObj);
+          console.log(devicesObj);
 
           this.device = devicesObj.device.device;
 

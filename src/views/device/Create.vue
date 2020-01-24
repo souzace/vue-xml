@@ -114,7 +114,7 @@ export default {
       };
       axios.post(`${server.baseURL}/devices`, customerData,  { withCredentials: false }).then((device) => {
         this.$bus.$emit('UpdateDeviceList', device);
-        router.push({ name: "home" });
+        router.push({ name: "devices" });
       });
     }
   }

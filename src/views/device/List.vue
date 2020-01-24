@@ -4,7 +4,10 @@
       <h1>Dispositivos</h1>
     </div>
 
-    <div class>
+    <div>
+      <div style="float: left; width: 100%; padding-bottom: 5px;">
+        <button style="float: right;" class="btn btn-outline-dark" v-on:click="newDevice">Novo Dispositivo</button>
+      </div>
       <table class="table table-bordered">
         <thead class="thead-dark">
           <tr>
@@ -14,11 +17,11 @@
             <th scope="col">Fabricante</th>
             <th scope="col">Modelo</th>
             <th scope="col">Sistema Operacional</th>
+            <th scope="col">Ações</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="device in devices" :key="device._id">
-            <td>{{ device.id }}</td>
+          <tr v-for="device in devices" :key="device.id">
             <td>{{ device.tippingNumber }}</td>
             <td>{{ device.typeDevice }}</td>
             <td>{{ device.name }}</td>
@@ -29,7 +32,7 @@
               <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group" style="margin-bottom: 20px;">
                   <router-link
-                    :to="{name: 'Edit', params: {id: device.id}}"
+                    :to="{name: 'deviceEdit', params: {id: device.id}}"
                     class="btn btn-sm btn-outline-secondary"
                   >Editar</router-link>
                   <button
@@ -53,6 +56,7 @@
 import { server } from "../../helper";
 import axios from "axios";
 import * as Parser from "fast-xml-parser";
+import router from "../../router";
 
 export default {
   data() {
@@ -64,19 +68,27 @@ export default {
     this.fetchDevices();
   },
   methods: {
+    newDevice() {
+      router.push({ name: 'deviceCreate'});
+    },
     fetchDevices() {
       axios
         .get(`${server.baseURL}/devices`, { responseType: 'document'})
         .then(data => {
-
           
-          let devicesXml =  new XMLSerializer().serializeToString(data.data);
-          
-          let devicesObj = Parser.parse(devicesXml);
+          if (data.data !== null) {
+            
+            let devicesXml =  new XMLSerializer().serializeToString(data.data);
+            let devicesObj = Parser.parse(devicesXml);
+            
+            if (Array.isArray(devicesObj.devices.device)) {
+              this.devices = devicesObj.devices.device;
+            } else {
+              this.devices.push(devicesObj.devices.device);
+            }
+          } 
 
-          //console.log(devicesObj);
 
-          this.devices = devicesObj.devices.device;
         });
 
     },
@@ -90,11 +102,11 @@ export default {
     }
   },
   mounted() {
-    this.$bus.$on("UpdateDeviceList", device => {
-      this.devices.push(device);
+    /*this.$bus.$on("UpdateDeviceList", device => {
+     // this.devices.push(device);
       //this.fetchDevices();
 
-    });
+    });*/
   }
 };
 </script>
